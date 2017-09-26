@@ -46,8 +46,9 @@
       @isset($messages)
         @foreach ($messages as $message)
 
+          @isset($message->user)
           <P>writer :  {{$message->user->name}}</P>
-
+@endisset
           <p>content : {{$message->content}}</p>
 
 

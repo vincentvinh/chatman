@@ -25,17 +25,14 @@
     <div class="text-center">
 
       {{-- All the groups you are linked with => --}}
-      {{-- @isset($messages)
-      @foreach ($messages as $message)
-
-      <P>writer :  {{$message->user->name}}</P>
-
-      <p>content : {{$message->content}}</p>
-
+      @isset($groups)
+        <h1>Group where you are involved<h1>
+      @foreach ($groups as $group)
+      <p>Name : <a href="group/{{$group->id}}"> {{$group->name}}</a></p>
 
     @endforeach
 
-  @endisset --}}
+  @endisset
 
 </div>
 </div>
