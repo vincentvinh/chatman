@@ -18,3 +18,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/message', 'MessageController@index');
+Route::post('/message', 'MessageController@store');
+Route::get('/messageShow', 'MessageController@show')->name('show');
+//Groupe
+Route::get('/group', 'GroupController@index');
+Route::post('/group', 'GroupController@store');
