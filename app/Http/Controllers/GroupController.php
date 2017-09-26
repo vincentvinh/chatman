@@ -87,6 +87,7 @@ class GroupController extends Controller
       $messages = \App\Message::join('group_message', 'group_message.message_id', '=', 'messages.id')
                               ->join('groups', 'group_message.group_id', '=', 'groups.id' )
                               ->where('groups.id', $id)
+                              ->orderBy('messages.created_at', 'desc')
                               ->get();
                               // dd($messages);
 
@@ -195,7 +196,7 @@ class GroupController extends Controller
         }
       }
       // dd( $group);
-        return redirect()->route('show',
+        return redirect()->route('groupMsg',
         ['id' => $id]
       );
     }
