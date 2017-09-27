@@ -12,6 +12,8 @@
 */
 
 Route::get('/', function () {
+
+
     return view('welcome');
 });
 
@@ -30,3 +32,7 @@ Route::post('/grMsg/{id}', 'GroupController@storeMsg')->name('grMsg');
 
 Route::get('/addPers/{id}', 'GroupController@addPers');
 Route::post('/addPersSub/{id}', 'GroupController@addPersSub');
+
+Route::get('/addMe/{id}', 'GroupController@addMe')->name('addMe');
+
+Route::get('/admin', 'AdminController@index')->name('admin');

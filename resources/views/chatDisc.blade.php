@@ -45,6 +45,8 @@
               <div class="col col-xs-3">   Writer : {{$message->user->name }} </div>
 
               <div class="col col-xs-5">     Content : {{$message->content}}</div>
+
+              {{-- Todo : allways the same date --}}
               <div class="col col-xs-4">       Created : {{$message->created_at}}</div>
 
             @endforeach

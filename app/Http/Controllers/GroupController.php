@@ -26,7 +26,7 @@ class GroupController extends Controller
                           ->join('users', 'group_user.user_id', '=', 'users.id')
                           ->where('group_user.user_id', $userId)
                           ->get();
-                          // dd($groups);
+
 
           return view('groupIndex', [
             'groups' => $groups,
@@ -63,13 +63,13 @@ class GroupController extends Controller
         // On recup l'utilisateur pour que le projet soit asocié à l'utilisateur
         $user = $request->user();
         $group = new \App\Group();
-
+        $group->owner = 1;
         $group->name = $request->name;
 
 
         $group->save();
 // $userReal = $user->groups()->attach($group->id);
-        $group->users()->attach($user->id);
+        $group->users()->attach($user->id,['approved' => '1']);
 
         return redirect()->route('group');
       }
@@ -165,6 +165,20 @@ class GroupController extends Controller
       );
 
     }
+    public function addMe(Request $request, $id)
+    {
+
+      $user = $request->user()->id;
+
+      $group = \App\Group::find($id);
+
+      // I have add the user to the group and set the approved on group_user at 0
+
+      $group->users()->attach($user, ['approved' => 0]); //I add the user to the group and set on 0 the approved values
+// dd($group);
+        return redirect( 'home');
+
+    }
 
     /**
      * Update the specified resource in storage.
@@ -207,8 +221,5 @@ class GroupController extends Controller
      * @param  \App\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $group)
-    {
-        //
-    }
+
 }

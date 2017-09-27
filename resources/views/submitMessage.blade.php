@@ -35,7 +35,7 @@
     <h1>Create a Message</h1>
     <form action="/message" method="post">
       {!! csrf_field() !!}
-
+      
       <div class="form-group">
         <label for="content">Description</label>
         <textarea class="form-control" id="content" name="content" placeholder="content"></textarea>
@@ -47,8 +47,8 @@
         @foreach ($messages as $message)
 
           @isset($message->user)
-          <P>writer :  {{$message->user->name}}</P>
-@endisset
+            <P>writer :  {{$message->user->name}}</P>
+          @endisset
           <p>content : {{$message->content}}</p>
 
 

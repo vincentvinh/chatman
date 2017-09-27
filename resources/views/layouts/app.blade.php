@@ -52,6 +52,9 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                  <li>
+                                    <a href="{{route('admin')}}">Manage your groups</a>
+                                  </li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
