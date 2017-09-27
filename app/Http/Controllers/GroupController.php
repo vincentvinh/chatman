@@ -63,13 +63,13 @@ class GroupController extends Controller
         // On recup l'utilisateur pour que le projet soit asocié à l'utilisateur
         $user = $request->user();
         $group = new \App\Group();
-        $group->owner = 1;
+        $group->owner = $user->id;
         $group->name = $request->name;
 
 
         $group->save();
 // $userReal = $user->groups()->attach($group->id);
-        $group->users()->attach($user->id,['approved' => '1']);
+        $group->users()->attach($user->id,['status' => '1']);
 
         return redirect()->route('group');
       }
@@ -174,8 +174,8 @@ class GroupController extends Controller
 
       // I have add the user to the group and set the approved on group_user at 0
 
-      $group->users()->attach($user, ['approved' => 0]); //I add the user to the group and set on 0 the approved values
-// dd($group);
+      $group->users()->attach($user, ['status' => 0]); //I add the user to the group and set on 0 the approved values
+
         return redirect( 'home');
 
     }

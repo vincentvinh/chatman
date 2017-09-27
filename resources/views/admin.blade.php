@@ -15,13 +15,20 @@
         </div>
       @endif
 
-      {{dump($groupsOwned)}}
-      <h1> Here are all your groups :
-        {{-- {{dump($group->users)}} --}}
-        {{-- @foreach ($users as $user)
-          <p class="text-center">Mr {{$user->name}}</p>
 
-        @endforeach --}}
+      <h1> Here are all your groups :
+
+         @foreach ($groupsOwned as $group)
+
+              <a href="{{url('/accept', ['id' =>$group->id])}}"><p class="text-center">Mr {{$group->name}}</p></a>
+           {{-- @foreach ($group->users() as $user)
+
+               <p class="text-center">Mr {{$user->name}}</p>
+
+           @endforeach --}}
+
+
+        @endforeach
 
 
 

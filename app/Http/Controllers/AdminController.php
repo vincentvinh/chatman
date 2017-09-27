@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Group;
+use Validator;
+use DB;
 
 class AdminController extends Controller
 {
@@ -23,20 +25,24 @@ class AdminController extends Controller
               'groupsOwned' => $groupsOwned]);
 
     }
-    public function accept($request)
+    public function accept(Request $request, $id)
     {
+        $group = \App\Group::find($id);
+        // dd( $group);
         $userId = $request->user()->id;
         $users = \App\User::select('users.id', 'users.name')
-                            ->join('group_user', 'user.id', '=', 'group_user.user_id')
-                            ->join('groups', 'group_user.group_id', '=', 'groups.id' )
-                            ->addselect('groups.id')
-                            ->where('groups.owner', $userId)
-                            ->andwhere('group_user.approved', 0)
+                            ->join('group_user', 'group_user.user_id', '=', 'users.id')
+
+
+                            ->where('group_user.group_id', $group->id)
+                            ->where('group_user.user_id', '!=', $userId)
+                            ->whereNotNull('group_user.status')
+                            ->where('group_user.status', '!=', 1)
                             ->get();
 
 
       return view('accept', [
-        'users' => $users]);
+        'users' => $users, 'group' =>$group]);
 
     }
     /**
@@ -44,10 +50,38 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function acceptVal(Request $request, $id)
     {
-        //
+
+
+            $validator = Validator::make($request->all(), [
+              'users' => 'required',
+
+            ]);
+            if ($validator->fails()) {
+              return back()
+              ->withInput()
+              ->withErrors($validator);
+            }
+            else {
+
+              $group = \App\Group::find($id);
+// dd($request->users);
+              foreach ($request->users as $userId) {
+
+
+              DB::table('groups')->join('group_user', 'group_user.group_id', '=', 'groups.id')
+                                  ->where('group_user.user_id', '=', $userId)
+                                  ->where('group_user.group_id', '=', $group->id)
+                                  ->update(['status' => '1']);
+
+                                }
+              }
+
+    return redirect()->route('accept', [
+      'group' => $group->id]);
     }
+
 
     /**
      * Store a newly created resource in storage.
