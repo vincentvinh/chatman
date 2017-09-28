@@ -25,6 +25,7 @@ class GroupController extends Controller
                           ->join('group_user', 'group_user.group_id', '=', 'groups.id')
                           ->join('users', 'group_user.user_id', '=', 'users.id')
                           ->where('group_user.user_id', $userId)
+                          ->where('group_user.status', 1)
                           ->get();
 
 

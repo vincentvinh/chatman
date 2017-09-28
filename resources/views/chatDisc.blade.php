@@ -19,7 +19,10 @@
       <h1> Here are the participants :
         {{-- {{dump($group->users)}} --}}
         @foreach ($group->users as $user)
-          <p class="text-center">Mr {{$user->name}}</p>
+          @if($user->pivot->status == 1)
+              <p class="text-center">Mr {{$user->name}}</p>
+        @endif
+
 
         @endforeach
       </div>

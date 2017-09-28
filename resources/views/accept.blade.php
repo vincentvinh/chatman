@@ -16,19 +16,39 @@
       @endif
 
 
-        <h1> New participant validation</h1>
-        <form action="{{url('/acceptVal', ['id' => $group] )}}" method="post">
-          {!! csrf_field() !!}
-          <select class="selectpicker" id="users" name="users[]" multiple>
-                        @foreach ($users as $user)
-                              <option value="{{$user->id}}">{{$user->name}}</option>
-                        @endforeach
-                      </select>
+      <h1> New participant validation for your group => {{$group->name}}</h1>
+      <form action="{{url('/acceptVal', ['id' => $group] )}}" method="post">
+        {!! csrf_field() !!}
+        <select class="selectpicker" id="users" name="users[]" multiple>
+          @foreach ($users as $user)
+            <option value="{{$user->id}}">{{$user->name}}</option>
+          @endforeach
+        </select>
 
-          <button type="submit" class="btn btn-default">Submit</button>
-        </form>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+      <div class="row">
+        {{-- d{{dump($allusers)}} --}}
+        <h2>All the participant in the group =></h2>
+        @foreach ($allusers as $user)
+          <div class="col col-xs-4">
+            {{$user->name}}
+          </div>
+          <div class="col col-xs-4">
+            {{$user->status}}
+          </div>
+          <div class="col col-xs-4">
+            @if($user->status == 1)
+            <a href="{{url('ban', ['id' => $user->id, 'group' => $group])}}"><button>Ban this participant by clicking here</button></a>
+          @else
+            <p> this participant is banned</p>
+          @endif
+            </div>
 
+        @endforeach
       </div>
+
     </div>
   </div>
+</div>
 @endsection

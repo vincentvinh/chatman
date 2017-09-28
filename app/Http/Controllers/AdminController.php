@@ -39,10 +39,15 @@ class AdminController extends Controller
                             ->whereNotNull('group_user.status')
                             ->where('group_user.status', '!=', 1)
                             ->get();
+        $allusers = \App\User::join('group_user', 'group_user.user_id', '=', 'users.id')
+                                  ->where('group_user.group_id', $group->id)
+                                  ->where('group_user.user_id', '!=', $userId)
+                                  ->where('group_user.status', '>=', 1)
+                                  ->get();
 
 
       return view('accept', [
-        'users' => $users, 'group' =>$group]);
+        'users' => $users, 'group' =>$group, 'allusers' => $allusers]);
 
     }
     /**
@@ -89,9 +94,17 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function ban(Request $request, $id, $group)
     {
-        //
+      DB::table('groups')->join('group_user', 'group_user.group_id', '=', 'groups.id')
+                          ->where('group_user.user_id', '=', $id)
+                          ->where('group_user.group_id', '=', $group)
+                          ->update(['status' => '2']);
+
+                          return redirect()->route('accept', [
+                            'group' => $group]);
+
+
     }
 
     /**

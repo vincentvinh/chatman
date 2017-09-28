@@ -78,18 +78,13 @@
     {{-- @endif --}}
 
     <div class="content">
-      <div class="title m-b-md">
-        Laravel
-      </div>
+
 
       <div class="links">
         @auth
           <a href="/message">Ecrire un message</a>
           <a href="/group">Créer un group de discussion</a>
         @endauth
-        <a href="https://laravel-news.com">News</a>
-        <a href="https://forge.laravel.com">Forge</a>
-        <a href="https://github.com/laravel/laravel">GitHub</a>
       </div>
       <div>
         @auth
