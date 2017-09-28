@@ -25,75 +25,54 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-      $array = [];
-      // dd($request->user());
+
+
       if(empty($request->user()->id))
       {
         return view('home');
+
       }else {
+      $tab = null;
+
+
         $userId = $request->user()->id;
 
         $groups = \App\Group::All();
+// dd( $groups);
+          foreach ($groups as $group) {
 
-        foreach ($groups as $group) {
-          if ($group->owner !== $userId)  {
+            $array = DB::table('groups')
+                                ->join('group_user', 'group_user.group_id', '=', 'groups.id')
+                                ->Where('group_user.user_id', '=', $userId)
+                                ->where('group_user.group_id', '=', $group->id)
+                                // ->whereNull('group_user.status')
+                                //whereNull is not usefull
+                                ->get();
+          $array2 = DB::table('groups')
 
-                foreach ($group->users as $user) {
-                  if ($user->id !== $userId) {
+          //                     //all the group owned by somebodyelse
+                              ->where('groups.owner', '!=', $userId)
 
+                              ->get();
+// dd( $array2);
+              if (empty($array[0]) && !empty($array2[0])) {
 
-                  }
-                  else {
-                    $groups = \App\Group::select('groups.id', 'groups.name')
-                                        ->join('group_user', 'group_user.group_id', '=', 'groups.id')
-                                        ->where('group_user.group_id', $group->id)
-                                        ->where('group_user.user_id', '=', $userId)
-                                        ->where('group_user.status', '=', 0)
-                                        ->get();
-                    if(empty($groups))
-                    {
-                        $array[] = $group;
-                    }
-
-                  }
-
-                }
+                                  $tab[] = $group;
+              }
+              $array = '';
+              $array2= '';
           }
+
+
         }
 
 
 
-        // dd( $array);
-        // //Add all the groups where you can add yourself
-        // $groups = DB::table('groups')->select('groups.id', 'groups.name')
-        //                     ->groupBy('groups.id')
-        //                     //all the group owned by somebodyelse
-        //                     ->where('groups.owner', '!=', $userId)
-        //                     //and where I dont take part off
-        //                     ->join('group_user', 'group_user.group_id', '=', 'groups.id')
-        //                     ->Where('group_user.user_id', '=', $userId)
-        //                     ->where('group_user.group_id', '=', )
-        //                     ->get();
-        //                     dd($groups);
-        //                     if (emptyArray($groups)) {
-        //
-        //
-        //                       $groups = DB::table('groups')->select('groups.id', 'groups.name')
-        //                                           ->groupBy('groups.id')//all the group owned by somebodyelse
-        //                                           ->where('groups.owner', '!=', $userId)
-        //                                           //and where I dont take part off
-        //                                           ->leftjoin('group_user', 'group_user.group_id', '=', 'groups.id')
-        //                                           ->Where('group_user.user_id', '!=', $userId)
-        //
-        //                                           ->get();
-        //                                           /
-        //                     }
-
 
 
           return view('home',
-          ['groups' => $array]
+          ['groups' => $tab]
         );
       }
-    }
+
 }

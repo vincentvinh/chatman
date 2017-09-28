@@ -17,34 +17,36 @@
             You are logged in!
             <h1>Add your self to one of these groups and wait for the admin acceptation</h1>
             @auth
+@isset($groups)
+  @foreach ($groups as $group)
 
-            @foreach ($groups as $group)
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"> {{$group->name}}</button>
 
-              <!-- Trigger the modal with a button -->
-              <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal"> {{$group->name}}</button>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
 
-              <!-- Modal -->
-              <div id="myModal" class="modal fade" role="dialog">
-                <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">{{$group->name}}</h4>
+          </div>
+          <div class="modal-body">
+            <p>Some text in the modal.</p>
+          </div>
+          <div class="modal-footer">
+            <a href="{{url('/addMe', ['id' => $group->id])}}"><button type="button" class="btn btn-default">Join the group</button></a>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
 
-                  <!-- Modal content-->
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">{{$group->name}}</h4>
-                    </div>
-                    <div class="modal-body">
-                      <p>Some text in the modal.</p>
-                    </div>
-                    <div class="modal-footer">
-                      <a href="{{url('/addMe', ['id' => $group->id])}}"><button type="button" class="btn btn-default">Join the group</button></a>
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                  </div>
+      </div>
+    </div>
+  @endforeach
+@endisset
 
-                </div>
-              </div>
-            @endforeach
           @endauth
 
           </div>

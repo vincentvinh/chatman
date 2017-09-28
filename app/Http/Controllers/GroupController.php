@@ -144,22 +144,7 @@ class GroupController extends Controller
       $user = $request->user()->id;
       $users = \App\User::where('users.id', '!=', $user )->get();
       $group = \App\Group::find($id);
-// dd($request);
-  //     $validator = Validator::make($request->all(), [
-  //       'pers' => 'required',
-  //
-  //     ]);
-  //     if ($validator->fails()) {
-  //       return back()
-  //       ->withInput()
-  //       ->withErrors($validator);
-  //     }
-  //     else {
-  // dd($request);
-  //       foreach ($request->pers as $pers) {
-  //           dd($pers);
-  //       }
-  //     }
+
         return view( 'addPers',
         ['group' => $group, 'users' => $users]
       );
