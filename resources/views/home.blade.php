@@ -24,7 +24,7 @@
                   <div class="col col-xl-12">
                     <!-- Trigger the modal with a button -->
                     <div class="row">
-                      <div class="col col-xl-6">
+                      <div class="col col-xl-12">
                         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal{{$group->id}}"> {{$group->name}}</button>
 
                         <!-- Modal -->
@@ -48,18 +48,25 @@
                           </div>
                         </div>
                       </div>
-                      <div class="col col-xl-6">
 
-
-                      </div>
                     </div>
                   </div>
 
 
-                  
+
                 @endforeach
               @endisset
+              @foreach ($groupsWait as $groupWait)
+                <div class="col col-xl-12">
+                  <!-- Trigger the modal with a button -->
+                  <div class="row">
+                    <div class="col col-xl-12">
+                      <button type="button" class="btn btn-secondary btn-lg">  waiting for acceptation from the admin of {{$groupWait->name}}</button>
+                    </div>
 
+                  </div>
+                </div>
+              @endforeach
             @endauth
 
           </div>

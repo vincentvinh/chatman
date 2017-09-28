@@ -41,9 +41,17 @@ class HomeController extends Controller
 // dd( $groups);
           foreach ($groups as $group) {
 
+
+
+//Two different tasks 1 get the groups where an answer from the group owner is requestd
+//2nd one All the groups where the user can apply
+
+
+            //////////////////////////////////////////////////////////////////////
+
             $array = DB::table('groups')
                                 ->join('group_user', 'group_user.group_id', '=', 'groups.id')
-                                ->Where('group_user.user_id', '=', $userId)
+                                ->where('group_user.user_id', '=', $userId)
                                 ->where('group_user.group_id', '=', $group->id)
                                 // ->whereNull('group_user.status')
                                 //whereNull is not usefull
@@ -62,16 +70,19 @@ class HomeController extends Controller
               $array = '';
               $array2= '';
           }
+          $groupsWait = \App\Group::join('group_user', 'group_user.group_id', '=', 'groups.id')
+                                    ->where('group_user.user_id', '=', $userId)
+                                    ->where('group_user.status', 0)
+                                    ->get();
 
-
-        }
+      }
 
 
 
 
 
           return view('home',
-          ['groups' => $tab]
+          ['groups' => $tab, 'groupsWait' => $groupsWait]
         );
       }
 
