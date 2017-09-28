@@ -33,33 +33,47 @@ class AdminController extends Controller
         // dd( $group);
         $userReal = $request->user();
         $userId = $request->user()->id;
-        $array[] =  $group->users;
+        $array =  $group->users;
+        foreach ($array as $value) {
+          $idea[] = $value->id;
+        }
 
         ////////////////////////////////////////////////////////////////////////////////
         $arrayUsers = \App\User::where('users.id', '!=', $userId)->get();
 
         foreach ($arrayUsers as $papa) {
-          if(!in_array($papa, $array))
+
+          if(in_array($papa->id, $idea))
           {
-            $tab[] = $papa;
+            $tab[] = $papa->id;
           }
         }
-// dd( $tab);
+
         foreach ($group->users as $userAdd1) {
 
         $usersAdd = \App\User::join('group_user', 'group_user.user_id', '=', 'users.id')
                                 ->where('group_user.user_id', '=', $userAdd1->id)
-                                ->where('group_user.status', '=', 0)
+                                ->where('group_user.status', '=', 1)
                                 ->get();
 
           if (!empty($usersAdd[0])) {
-            if (in_array($usersAdd[0], $tab)) {
-              $tab[] = $usersAdd[0];
+
+            if (in_array($usersAdd[0]->id, $tab)) {
+
+              if(($key = array_search($usersAdd[0]->id, $tab)) !== false) {
+                    unset($tab[$key]);
+              }
+
+            }
+            else {
+              // $tab[] = $usersAdd[0]->id;
             }
 
           }
         }
-
+        foreach ($tab as $trop) {
+          $bon[] = \App\User::find($trop);
+        }
 
 
         ////////////////////////////////////////////////////////////////////////////////
@@ -81,7 +95,7 @@ class AdminController extends Controller
 
 
       return view('accept', [
-        'users' => $users, 'group' =>$group, 'allusers' => $allusers,'usersAdd' => $tab]);
+        'users' => $users, 'group' =>$group, 'allusers' => $allusers,'usersAdd' => $bon]);
 
     }
     /**
