@@ -6,7 +6,7 @@
       @if (Route::has('login'))
         <div class="top-right links">
           @auth
-            <a href="{{ url('/home') }}">Home</a></br>
+
 
           @else
             <a href="{{ route('login') }}">Login</a>
@@ -14,26 +14,29 @@
           @endauth
         </div>
       @endif
-
-
-      <h1> Here are all your groups :
-
-         @foreach ($groupsOwned as $group)
-
-              <a href="{{url('/accept', ['id' =>$group->id])}}"><p class="text-center">Mr {{$group->name}}</p></a>
-           {{-- @foreach ($group->users() as $user)
-
-               <p class="text-center">Mr {{$user->name}}</p>
-
-           @endforeach --}}
-
-
-        @endforeach
-
-
-
-
-      </div>
     </div>
-  </div>
-@endsection
+
+    <h1> Here are all your groups :</h1>
+
+    @foreach ($groupsOwned as $group)
+      <a class="" href="{{url('/accept', ['id' =>$group->id])}}">
+        <div class="row">
+          <div class="col col-xs-3">
+          </div>
+
+          <div class="col col-xs-6 alert alert-success">
+            <p class="text-center">Mr {{$group->name}}</p>
+          </div>
+          <div class="col col-xs-3">
+          </div>
+        </div>
+      </a>
+      @endforeach
+
+
+
+
+    </div>
+
+
+  @endsection

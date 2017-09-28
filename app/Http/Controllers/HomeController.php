@@ -54,7 +54,7 @@ class HomeController extends Controller
                               ->where('groups.owner', '!=', $userId)
 
                               ->get();
-// dd( $array2);
+
               if (empty($array[0]) && !empty($array2[0])) {
 
                                   $tab[] = $group;

@@ -3,18 +3,7 @@
 @section('content')
   <div class="container">
     <div class="flex-center position-ref full-height">
-      @if (Route::has('login'))
-        <div class="top-right links">
-          @auth
-            <a href="{{ url('/home') }}">Home</a></br>
-
-          @else
-            <a href="{{ route('login') }}">Login</a>
-            <a href="{{ route('register') }}">Register</a>
-          @endauth
-        </div>
-      @endif
-
+    
 
       <h1> New participant validation for your group => {{$group->name}}</h1>
       <form action="{{url('/acceptVal', ['id' => $group] )}}" method="post">
@@ -29,23 +18,29 @@
       </form>
       <div class="row">
         {{-- d{{dump($allusers)}} --}}
-        <h2>All the participant in the group =></h2>
-        @foreach ($allusers as $user)
-          <div class="col col-xs-4">
-            {{$user->name}}
-          </div>
-          <div class="col col-xs-4">
-            {{$user->status}}
-          </div>
-          <div class="col col-xs-4">
-            @if($user->status == 1)
-            <a href="{{url('ban', ['id' => $user->id, 'group' => $group])}}"><button>Ban this participant by clicking here</button></a>
-          @else
-            <p> this participant is banned</p>
-          @endif
+        <div class="col col-xl-12">
+          <h2>All the participant in the group =></h2>
+
+
+          @foreach ($allusers as $user)
+            <div class="row">
+              <div class="col col-xs-4">
+                {{$user->name}}
+              </div>
+              <div class="col col-xs-4">
+                {{$user->status}}
+              </div>
+              <div class="col col-xs-4">
+                @if($user->status == 1)
+                  <a href="{{url('ban', ['id' => $user->id, 'group' => $group])}}"><button>Ban this participant by clicking here</button></a>
+                @else
+                  <p> this participant is banned</p>
+                @endif
+              </div>
             </div>
 
-        @endforeach
+          @endforeach
+        </div>
       </div>
 
     </div>

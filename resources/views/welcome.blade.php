@@ -82,8 +82,10 @@
 
       <div class="links">
         @auth
-          <a href="/message">Ecrire un message</a>
-          <a href="/group">Créer un group de discussion</a>
+          <a href="/message">Write on public wall</a>
+          <a href="/group">Create a group</a>
+          <a href="/group">Your groups</a>
+          <a href="/home">Join a group</a>
         @endauth
       </div>
       <div>
