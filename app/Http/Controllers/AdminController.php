@@ -28,26 +28,60 @@ class AdminController extends Controller
     public function accept(Request $request, $id)
     {
         $group = \App\Group::find($id);
+        $groupId = $group->id;
+        $tab='';
         // dd( $group);
+        $userReal = $request->user();
         $userId = $request->user()->id;
+        $array[] =  $group->users;
+
+        ////////////////////////////////////////////////////////////////////////////////
+        $arrayUsers = \App\User::where('users.id', '!=', $userId)->get();
+
+        foreach ($arrayUsers as $papa) {
+          if(!in_array($papa, $array))
+          {
+            $tab[] = $papa;
+          }
+        }
+// dd( $tab);
+        foreach ($group->users as $userAdd1) {
+
+        $usersAdd = \App\User::join('group_user', 'group_user.user_id', '=', 'users.id')
+                                ->where('group_user.user_id', '=', $userAdd1->id)
+                                ->where('group_user.status', '=', 0)
+                                ->get();
+
+          if (!empty($usersAdd[0])) {
+            if (in_array($usersAdd[0], $tab)) {
+              $tab[] = $usersAdd[0];
+            }
+
+          }
+        }
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////
+
+        ////////////////////////////////////////////////////////////////////////////////
         $users = \App\User::select('users.id', 'users.name')
                             ->join('group_user', 'group_user.user_id', '=', 'users.id')
-
-
                             ->where('group_user.group_id', $group->id)
                             ->where('group_user.user_id', '!=', $userId)
                             ->whereNotNull('group_user.status')
                             ->where('group_user.status', '!=', 1)
                             ->get();
+        ////////////////////////////////////////////////////////////////////////////////
         $allusers = \App\User::join('group_user', 'group_user.user_id', '=', 'users.id')
-                                  ->where('group_user.group_id', $group->id)
-                                  ->where('group_user.user_id', '!=', $userId)
-                                  ->where('group_user.status', '>=', 1)
-                                  ->get();
+                            ->where('group_user.group_id', $group->id)
+                            ->where('group_user.user_id', '!=', $userId)
+                            ->where('group_user.status', '>=', 1)
+                            ->get();
 
 
       return view('accept', [
-        'users' => $users, 'group' =>$group, 'allusers' => $allusers]);
+        'users' => $users, 'group' =>$group, 'allusers' => $allusers,'usersAdd' => $tab]);
 
     }
     /**

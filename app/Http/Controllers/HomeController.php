@@ -56,7 +56,7 @@ class HomeController extends Controller
                                 // ->whereNull('group_user.status')
                                 //whereNull is not usefull
                                 ->get();
-          $array2 = DB::table('groups')
+           $array2 = DB::table('groups')
 
           //                     //all the group owned by somebodyelse
                               ->where('groups.owner', '!=', $userId)
@@ -76,10 +76,6 @@ class HomeController extends Controller
                                     ->get();
 
       }
-
-
-
-
 
           return view('home',
           ['groups' => $tab, 'groupsWait' => $groupsWait]

@@ -14,7 +14,7 @@
 Route::get('/', function () {
 
 
-    return view('welcome');
+  return view('welcome');
 });
 
 Auth::routes();
@@ -31,7 +31,7 @@ Route::get('/group/{id}', 'GroupController@show')->name('groupMsg');
 Route::post('/grMsg/{id}', 'GroupController@storeMsg')->name('grMsg');
 
 Route::get('/addPers/{id}', 'GroupController@addPers');
-Route::post('/addPersSub/{id}', 'GroupController@addPersSub');
+Route::post('/addPersSub/{id}', 'GroupController@addPersSub')->name('addPers');
 
 Route::get('/addMe/{id}', 'GroupController@addMe')->name('addMe');
 

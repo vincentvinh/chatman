@@ -31,8 +31,8 @@
 
 
             <a class="dropdown-item" href="{{ url('/home') }}">Connect with other groups</a>
-
-
+<a class="dropdown-item" href="{{route('group')}}">Create a group</a>
+<a class="dropdown-item" href="{{route('admin')}}">Write to a group</a>
             <a class="dropdown-item" href="{{route('admin')}}">Manage your groups</a>
 
 

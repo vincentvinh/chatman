@@ -3,7 +3,17 @@
 @section('content')
   <div class="container">
     <div class="flex-center position-ref full-height">
-    
+      <h1> Add new participant</h1>
+      <form action="{{url('/addPersSub', ['id' => $group] )}}" method="post">
+        {!! csrf_field() !!}
+        <select class="selectpicker" id="pers" name="pers[]" multiple>
+          @foreach ($usersAdd as $userAdd)
+            <option value="{{$userAdd->id}}">{{$userAdd->name}}</option>
+          @endforeach
+        </select>
+        
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
 
       <h1> New participant validation for your group => {{$group->name}}</h1>
       <form action="{{url('/acceptVal', ['id' => $group] )}}" method="post">
