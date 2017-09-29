@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Message;
+use App\Group;
 use Illuminate\Http\Request;
 use Validator;
 
@@ -26,9 +27,16 @@ class MessageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function edit(Request $request, $id)
     {
-        //
+$group = \App\Group::find($id);
+
+$messages = \App\Message::join('group_message', 'group_message.message_id', '=', 'messages.id')
+                          ->where('group_message.group_id', $id)
+                          ->get();
+// dd( $messages);
+
+    return view( 'editMessage', ['messages'=> $messages]);
     }
 
     /**
@@ -82,10 +90,10 @@ class MessageController extends Controller
      * @param  \App\Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function edit(Message $message)
-    {
-        //
-    }
+    // public function edit(Message $message)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.

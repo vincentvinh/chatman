@@ -16,42 +16,42 @@
 </head>
 <body>
 
-    <ul class="nav nav-pills">
-      <li class="nav-item">
-        <a class="nav-link active" href="{{ url('/') }}">Active</a>
-      </li>
-      @guest
-        <li><a href="{{ route('login') }}">Login</a></li>
-        <li><a href="{{ route('register') }}">Register</a></li>
-      @else
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-          <div class="dropdown-menu">
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link active" href="{{ url('/') }}">Home</a>
+    </li>
+    @guest
+      <li><a href="{{ route('login') }}">Login</a></li>
+      <li><a href="{{ route('register') }}">Register</a></li>
+    @else
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+        <div class="dropdown-menu">
 
 
 
-            <a class="dropdown-item" href="{{ url('/home') }}">Connect with other groups</a>
-<a class="dropdown-item" href="{{route('group')}}">Create a group</a>
-<a class="dropdown-item" href="{{route('admin')}}">Write to a group</a>
-            <a class="dropdown-item" href="{{route('admin')}}">Manage your groups</a>
+          <a class="dropdown-item" href="{{ url('/home') }}">Connect with other groups</a>
+          <a class="dropdown-item" href="{{route('group')}}">Create a group</a>
+          <a class="dropdown-item" href="{{route('admin')}}">Write to a group</a>
+          <a class="dropdown-item" href="{{route('admin')}}">Manage your groups</a>
 
 
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{{ route('logout') }}"
-            onclick="event.preventDefault();
-            document.getElementById('logout-form').submit();">
-            Logout
-          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{{ route('logout') }}"
+          onclick="event.preventDefault();
+          document.getElementById('logout-form').submit();">
+          Logout
+        </a>
 
-          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-            {{ csrf_field() }}
-          </form>
-        </div>
-      </li>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+          {{ csrf_field() }}
+        </form>
+      </div>
+    </li>
 
-    @endguest
+  @endguest
 
-  </ul>
+</ul>
 
 
 

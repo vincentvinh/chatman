@@ -2,6 +2,10 @@
 
 @section('content')
   <div class="container">
+    <div>
+      <h1>Delete, edit or add messages in the group</h1>
+      <a href="{{url('/messageEdit', ['id' => $group])}}">Edit</a>
+    </div>
     <div class="flex-center position-ref full-height">
       <h1> Add new participant</h1>
       <form action="{{url('/addPersSub', ['id' => $group] )}}" method="post">
@@ -11,7 +15,7 @@
             <option value="{{$userAdd->id}}">{{$userAdd->name}}</option>
           @endforeach
         </select>
-        
+
         <button type="submit" class="btn btn-default">Submit</button>
       </form>
 
@@ -19,6 +23,7 @@
       <form action="{{url('/acceptVal', ['id' => $group] )}}" method="post">
         {!! csrf_field() !!}
         <select class="selectpicker" id="users" name="users[]" multiple>
+
           @foreach ($users as $user)
             <option value="{{$user->id}}">{{$user->name}}</option>
           @endforeach
