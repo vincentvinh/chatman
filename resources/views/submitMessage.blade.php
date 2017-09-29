@@ -33,13 +33,29 @@
     @endisset
 
     <h1>Create a Message</h1>
-    <form action="/message" method="post">
+    @if (count($errors) > 0)
+      <ul>
+          @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+          @endforeach
+      </ul>
+    @endif
+    <form action="/message" enctype="multipart/form-data" method="post">
       {!! csrf_field() !!}
-      
+
       <div class="form-group">
         <label for="content">Description</label>
         <textarea class="form-control" id="content" name="content" placeholder="content"></textarea>
       </div>
+      <div class="form-group">
+        <label for="name">name</label>
+        <textarea class="form-control" id="name" name="name" placeholder="name"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="photos">Photos</label>
+        <input type="file" name="photos[]" multiple />
+      </div>
+
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
     <div class="text-center">

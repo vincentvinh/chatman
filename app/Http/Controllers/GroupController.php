@@ -107,7 +107,8 @@ class GroupController extends Controller
     // dd($group);
     $validator = Validator::make($request->all(), [
       'content' => 'required|max:255',
-
+      'name' => 'required',
+      'photos' => 'required'
     ]);
     if ($validator->fails()) {
       return back()
@@ -120,9 +121,20 @@ class GroupController extends Controller
       $group = \App\Group::find($group);
       $message = new \App\Message();
       $message->content = $request->content;
+      $message->name = $request->name;
       $message->user_id = $user->id;
       $message->save();
       // $userReal = $user->groups()->attach($group->id);
+      foreach ($request->photos as $photo) {
+
+        $filename = $photo->store('photos');
+
+        $messagePhotos = new \App\MessagePhotos;
+        $messagePhotos->message_id = $message->id;
+        $messagePhotos->filename = $filename;
+        $messagePhotos->save();
+      }
+
 
 
 

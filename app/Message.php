@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
+
+  protected $fillable = ['name'];
+
   public function user()
   {
     return $this->belongsTo('App\User');
@@ -14,6 +17,10 @@ class Message extends Model
   public function groups()
   {
     return $this->belongsToMany('App\Group');
+}
+  public function msgM()
+  {
+    return $this->hasMany('App\MessagePhotos');
   }
   //
 }

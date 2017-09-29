@@ -17,15 +17,32 @@
         @endforeach
       </div>
 
-        <form action="{{url('/grMsg', ['id' => $group->id] )}}" method="post">
+        @if (count($errors) > 0)
+          <ul>
+              @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+          </ul>
+        @endif
+        <form action="{{url('/grMsg', ['id' => $group->id] )}}" enctype="multipart/form-data" method="post">
           {!! csrf_field() !!}
 
           <div class="form-group">
-
-            <textarea class="form-control" id="content" name="content" placeholder="Write your own message ;-)"></textarea>
+            <label for="content">Description</label>
+            <textarea class="form-control" id="content" name="content" placeholder="content"></textarea>
           </div>
+          <div class="form-group">
+            <label for="name">name</label>
+            <textarea class="form-control" id="name" name="name" placeholder="name"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="photos">Photos</label>
+            <input type="file" name="photos[]" multiple />
+          </div>
+
           <button type="submit" class="btn btn-default">Submit</button>
         </form>
+
 
       <div class="row">
         <div class="col col-xl-12">
@@ -39,15 +56,20 @@
           @foreach ($messages as $message)
 
             <div class="col col-xl-3 badge badge-pill badge-primary">   {{$message->user->name}} </div>
-            
+
             @if ($message->user->id == Auth::user()->id)
-              <div class="col col-xl-5">     {{$message->content}}</div>
+              <div class="col col-xl-4">     {{$message->content}}</div>
             @else
-              <div class="col col-xl-5 text-right">     {{$message->content}}</div>
+              <div class="col col-xl-4 text-right">     {{$message->content}}</div>
             @endif
 
             {{-- Todo : allways the same date --}}
-            <div class="col col-xl-4 text-right">      {{$message->created_at->format('d-m-Y H:i:s')}}</div>
+            <div class="col col-xl-2 text-right">      {{$message->created_at->format('d-m-Y H:i:s')}}</div>
+{{-- {{dump($message->msgM())}} --}}
+            @foreach ($message->msgM as $photo)
+
+              <div class="col col-xl-3 text-right">  <img src="storage/app/public/{{$photo->filename}}"></img>{{dump($photo->filename)}}</div>
+            @endforeach
 
           @endforeach
 
