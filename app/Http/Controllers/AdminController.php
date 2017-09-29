@@ -54,7 +54,7 @@ class AdminController extends Controller
 
         $usersAdd = \App\User::join('group_user', 'group_user.user_id', '=', 'users.id')
                                 ->where('group_user.user_id', '=', $userAdd1->id)
-                                ->where('group_user.status', '=', 1)
+                                ->where('group_user.status', '>=', 1)
                                 ->get();
 
           if (!empty($usersAdd[0])) {
@@ -85,7 +85,7 @@ class AdminController extends Controller
                             ->where('group_user.group_id', $group->id)
                             ->where('group_user.user_id', '!=', $userId)
                             ->whereNotNull('group_user.status')
-                            ->where('group_user.status', '!=', 1)
+                            ->where('group_user.status', '=', 0)
                             ->get();
         ////////////////////////////////////////////////////////////////////////////////
         $allusers = \App\User::join('group_user', 'group_user.user_id', '=', 'users.id')
@@ -162,9 +162,15 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function unBanned(Request $request, $id, $group)
     {
-        //
+      DB::table('groups')->join('group_user', 'group_user.group_id', '=', 'groups.id')
+                          ->where('group_user.user_id', '=', $id)
+                          ->where('group_user.group_id', '=', $group)
+                          ->update(['status' => '1']);
+
+                          return redirect()->route('accept', [
+                            'group' => $group]);
     }
 
     /**

@@ -40,3 +40,4 @@ Route::get('/admin', 'AdminController@index')->name('admin');
 Route::get('/accept/{id}', 'AdminController@accept')->name('accept');
 Route::post('/acceptVal/{id}', 'AdminController@acceptVal');
 Route::get('/ban/{id}/{group}', 'AdminController@ban');
+Route::get('/unBanned/{id}/{group}', 'AdminController@unBanned');

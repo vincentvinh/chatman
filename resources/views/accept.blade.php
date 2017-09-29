@@ -10,26 +10,26 @@
       <h1> Add new participant</h1>
       <form action="{{url('/addPersSub', ['id' => $group] )}}" method="post">
         {!! csrf_field() !!}
-        <select class="selectpicker" id="pers" name="pers[]" multiple>
+        <select class="form-control selectpicker" id="pers" name="pers[]" multiple>
           @foreach ($usersAdd as $userAdd)
             <option value="{{$userAdd->id}}">{{$userAdd->name}}</option>
           @endforeach
         </select>
 
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-secondary">Add</button>
       </form>
 
-      <h1> New participant validation for your group => {{$group->name}}</h1>
+      <h1> validation from request => </h1>
       <form action="{{url('/acceptVal', ['id' => $group] )}}" method="post">
         {!! csrf_field() !!}
-        <select class="selectpicker" id="users" name="users[]" multiple>
+        <select class="form-control selectpicker" id="users" name="users[]" multiple>
 
           @foreach ($users as $user)
             <option value="{{$user->id}}">{{$user->name}}</option>
           @endforeach
         </select>
 
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-secondary">Validate</button>
       </form>
       <div class="row">
         {{-- d{{dump($allusers)}} --}}
@@ -47,9 +47,9 @@
               </div>
               <div class="col col-xs-4">
                 @if($user->status == 1)
-                  <a href="{{url('ban', ['id' => $user->id, 'group' => $group])}}"><button>Ban this participant by clicking here</button></a>
+                  <a class="btn btn-danger" href="{{url('ban', ['id' => $user->id, 'group' => $group])}}">Ban this participant by clicking here</a>
                 @else
-                  <p> this participant is banned</p>
+                    <a class="btn btn-secondary" href="{{url('unBanned', ['id' => $user->id, 'group' => $group])}}">Unban this participant by clicking here</a>
                 @endif
               </div>
             </div>
