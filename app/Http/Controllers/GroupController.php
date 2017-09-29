@@ -188,10 +188,28 @@ public function addPersSub(Request $request, $id)
   else {
     $group = \App\Group::find($id);
 
+    $userExists = $group->users;
+    //
+    foreach ($userExists as $userExist) {
+    $uu[] = $userExist->id;      # code...
+    }
+    //We have to check first if  the user is allready in the database
+    //If it is we update
+    //not we create
+    ///////////////////////////////////////////////////////////////
+
     foreach ($request->pers as $per) {
-      $user = \App\User::find($per);
-      // dd($user);
-      $group->users()->attach($user, ['status' => 1]);
+// dd( $per);
+      if (in_array($per, $uu)) {
+        $user = DB::table('users')->where('id', $per)
+        ->join('group_user', 'group_user.user_id', '=', 'users.id')
+        ->update(['status' => 1]);
+      }
+      else {
+
+        $group->users()->attach($per, ['status' => 1]);
+      }
+
 
     }
   }

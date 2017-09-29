@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
 
         Schema::create('group_user', function (Blueprint $table) {
             $table->integer('status')->nullable();
-            // $table->primary(['group_id', 'user_id']);
+            $table->primary(['group_id', 'user_id']);
             $table->integer('group_id');
             $table->integer('user_id');
         });

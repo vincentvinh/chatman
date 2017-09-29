@@ -29,7 +29,8 @@ class AdminController extends Controller
     {
         $group = \App\Group::find($id);
         $groupId = $group->id;
-        $tab='';
+        $tab=[];
+        $bon = [];
         // dd( $group);
         $userReal = $request->user();
         $userId = $request->user()->id;
@@ -37,16 +38,16 @@ class AdminController extends Controller
         foreach ($array as $value) {
           $idea[] = $value->id;
         }
-
+        //Pour ajouter de nouveaux participants
         ////////////////////////////////////////////////////////////////////////////////
         $arrayUsers = \App\User::where('users.id', '!=', $userId)->get();
 
         foreach ($arrayUsers as $papa) {
-
-          if(in_array($papa->id, $idea))
-          {
+//On ajoute si il existe dans le groupe ou non
+          // if(in_array($papa->id, $idea))
+          // {
             $tab[] = $papa->id;
-          }
+          // }
         }
 
         foreach ($group->users as $userAdd1) {
