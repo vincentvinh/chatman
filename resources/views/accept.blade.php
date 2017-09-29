@@ -48,7 +48,10 @@
               <div class="col col-xs-4">
                 @if($user->status == 1)
                   <a class="btn btn-danger" href="{{url('ban', ['id' => $user->id, 'group' => $group])}}">Ban this participant by clicking here</a>
-                @else
+
+                @elseif ($user->status == 3)
+                    <a class="btn btn-success">This participant did not answer yet</a>
+                  @else
                     <a class="btn btn-secondary" href="{{url('unBanned', ['id' => $user->id, 'group' => $group])}}">Unban this participant by clicking here</a>
                 @endif
               </div>

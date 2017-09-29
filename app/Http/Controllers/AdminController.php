@@ -84,7 +84,7 @@ class AdminController extends Controller
                             ->join('group_user', 'group_user.user_id', '=', 'users.id')
                             ->where('group_user.group_id', $group->id)
                             ->where('group_user.user_id', '!=', $userId)
-                            ->whereNotNull('group_user.status')
+                            // ->whereNotNull('group_user.status')
                             ->where('group_user.status', '=', 0)
                             ->get();
         ////////////////////////////////////////////////////////////////////////////////
@@ -96,7 +96,11 @@ class AdminController extends Controller
 
 
       return view('accept', [
-        'users' => $users, 'group' =>$group, 'allusers' => $allusers,'usersAdd' => $bon]);
+        'users' => $users,
+        'group' =>$group,
+        'allusers' => $allusers,
+        'usersAdd' => $bon
+      ]);
 
     }
     /**
@@ -179,10 +183,15 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+     public function joinGroup(Request $request, $id, $group)
+     {
+       DB::table('groups')->join('group_user', 'group_user.group_id', '=', 'groups.id')
+                           ->where('group_user.user_id', '=', $id)
+                           ->where('group_user.group_id', '=', $group)
+                           ->update(['status' => '1']);
+// dd( $id);
+                           return redirect()->route('home');
+     }
 
     /**
      * Update the specified resource in storage.

@@ -13,12 +13,9 @@
                 {{ session('status') }}
               </div>
             @endif
-
-
             <h1>Add your self to one of these groups and wait for the admin acceptation</h1>
             @auth
               @isset($groups)
-
                 @foreach ($groups as $group)
                   {{-- {{dump($group)}} --}}
                   <div class="col col-xl-12">
@@ -30,7 +27,6 @@
                         <!-- Modal -->
                         <div id="myModal{{$group->id}}" class="modal fade" role="dialog">
                           <div class="modal-dialog">
-
                             <!-- Modal content-->
                             <div class="modal-content">
                               <div class="modal-header">
@@ -48,12 +44,8 @@
                           </div>
                         </div>
                       </div>
-
                     </div>
                   </div>
-
-
-
                 @endforeach
               @endisset
               @foreach ($groupsWait as $groupWait)
@@ -61,14 +53,18 @@
                   <!-- Trigger the modal with a button -->
                   <div class="row">
                     <div class="col col-xl-12">
-                      <button type="button" class="btn btn-secondary btn-lg">  waiting for acceptation from the admin of {{$groupWait->name}}</button>
-                    </div>
+                      {{-- {{dump($groupWait->status)}} --}}
+                      @if ($groupWait->status == 0)
+                           <button type="button" class="btn btn-secondary btn-lg">  waiting for acceptation from the admin of {{$groupWait->name}}</button>
+                        @else
+                          <a href="{{url('joinGroup', ['id' => Auth::user()->id, 'group' => $groupWait->id])}}" class="btn btn-secondary">Click to join {{$groupWait->name}}</a>
+                      @endif
 
+                    </div>
                   </div>
                 </div>
               @endforeach
             @endauth
-
           </div>
         </div>
       </div>

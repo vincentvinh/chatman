@@ -199,15 +199,15 @@ public function addPersSub(Request $request, $id)
     ///////////////////////////////////////////////////////////////
 
     foreach ($request->pers as $per) {
-// dd( $per);
+
       if (in_array($per, $uu)) {
         $user = DB::table('users')->where('id', $per)
         ->join('group_user', 'group_user.user_id', '=', 'users.id')
-        ->update(['status' => 1]);
+        ->update(['status' => 3]);
       }
       else {
 
-        $group->users()->attach($per, ['status' => 1]);
+        $group->users()->attach($per, ['status' => 3]);
       }
 
 

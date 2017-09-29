@@ -73,6 +73,7 @@ class HomeController extends Controller
           $groupsWait = \App\Group::join('group_user', 'group_user.group_id', '=', 'groups.id')
                                     ->where('group_user.user_id', '=', $userId)
                                     ->where('group_user.status', 0)
+                                    ->orWhere('group_user.status', 3)
                                     ->get();
 
       }
