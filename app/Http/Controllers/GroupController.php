@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use Validator;
 use DB;
 use Auth;
+use App\MessagePhotos;
 use App\User;
+use \Illuminate\Support\Facades\Storage;
 
 class GroupController extends Controller
 {
@@ -85,12 +87,22 @@ class GroupController extends Controller
   */
   public function show(Request $request, $id)
   {
-    $messages = \App\Message::join('group_message', 'group_message.message_id', '=', 'messages.id')
-    ->join('groups', 'group_message.group_id', '=', 'groups.id' )
-    ->where('groups.id', $id)
-    ->orderBy('messages.created_at', 'desc')
-    ->get();
-    // dd($messages);
+    $messages = DB::table('messages')->join('group_message', 'group_message.message_id', '=', 'messages.id')
+                              ->join('groups', 'group_message.group_id', '=', 'groups.id' )
+                              ->where('groups.id', $id)
+                              ->orderBy('messages.created_at', 'desc')
+                              ->get();
+// dd( $messages);
+
+    for ($i =0; $i<count($messages);$i++) {
+      // dd( $messages[$i]->message_id);
+        $baba[$i] = \App\MessagePhotos::where('message_photos.message_id', '=', $messages[$i]->message_id)
+                                              ->get();
+$array = json_decode(json_encode($messages[$i]), True);
+      array_push($array, $baba[$i]);
+    $messages[$i] = json_decode(json_encode($array), FALSE);
+    }
+
 
 
     $group = \App\Group::find($id);
@@ -104,11 +116,13 @@ class GroupController extends Controller
   }
   public function storeMsg(Request $request, $group)
   {
-    // dd($group);
+
+    // dd($files);
+
     $validator = Validator::make($request->all(), [
       'content' => 'required|max:255',
       'name' => 'required',
-      'photos' => 'required'
+      'photos' => 'array'
     ]);
     if ($validator->fails()) {
       return back()
@@ -125,19 +139,45 @@ class GroupController extends Controller
       $message->user_id = $user->id;
       $message->save();
       // $userReal = $user->groups()->attach($group->id);
-      foreach ($request->photos as $photo) {
 
+      //we get all the images in the directory and check if the one we want to upload doesnt exist allready
+      $files = Storage::allFiles('public/photos/');
 
-        $filename = $photo->getClientOriginalName();
-        $photo->storeAs('photos', $filename);
-        $messagePhotos = new \App\MessagePhotos;
-        $messagePhotos->message_id = $message->id;
-        $messagePhotos->filename = $filename;
-        $messagePhotos->save();
+      if (!empty($files))
+      {
+        foreach ($files as $fileCheck) {
+              // dump($fileCheck);
+          $tabCheck[] = str_replace("public/photos/", "", $fileCheck);
+
+        }
+        // dd( $tabCheck);
       }
 
+      if (!empty($request->photos)) {
+        foreach ($request->photos as $photo) {
 
+          //we get all the photos file and foreach photo we check
+          $filename = $photo->getClientOriginalName();
+          if(in_array($filename, $tabCheck))
+          {
+            //We dont need to store the image but we need to create a object
+            $messagePhotos = new \App\MessagePhotos;
+            $messagePhotos->message_id = $message->id;
+            $messagePhotos->filename = $filename;
+            $messagePhotos->save();
 
+          }
+          else {
+
+            $path = $photo->storeAs('public/photos', $filename);
+            $messagePhotos = new \App\MessagePhotos;
+            $messagePhotos->message_id = $message->id;
+            $messagePhotos->filename = $filename;
+            $messagePhotos->save();
+          }
+
+        }
+      }
 
       $message->groups()->attach($group->id);
       // dd($message);

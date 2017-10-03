@@ -54,8 +54,8 @@
 
 
           @foreach ($messages as $message)
-
-            <div class="col col-xl-3 badge badge-pill badge-primary">   {{$message->user->name}} </div>
+{{dump($message)}}
+            {{-- <div class="col col-xl-3 badge badge-pill badge-primary">   {{$message->user->name}} </div>
 
             @if ($message->user->id == Auth::user()->id)
               <div class="col col-xl-4">     {{$message->content}}</div>
@@ -64,13 +64,13 @@
             @endif
 
             {{-- Todo : allways the same date --}}
-            <div class="col col-xl-2 text-right">      {{$message->created_at->format('d-m-Y H:i:s')}}</div>
-{{-- {{dump($message->msgM)}} --}}
+            {{-- <div class="col col-xl-2 text-right">      {{$message->created_at->format('d-m-Y H:i:s')}}</div>
+
             @foreach ($message->msgM as $photo)
 
 
-              <div class="col col-xl-3 text-right">  <img alt="file" src="{{asset('photos/rsz_download.png')}}"></img>{{dump($photo->filename)}}</div>
-            @endforeach
+              <div class="col col-xl-3 text-right">  <img alt="file" src="{{asset("storage/photos/$photo->filename")}}"></img></div> --}}
+            {{-- @endforeach --}}
 
           @endforeach
 

@@ -15,8 +15,8 @@ class CreateMessagePhotosTable extends Migration
     {
         Schema::create('message_photos', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('message_id');
-            // $table->foreign('message_id')->references('id')->on('messages');
+            $table->integer('message_id')->unsigned();
+            $table->foreign('message_id')->references('id')->on('messages');
             $table->string('filename');
             $table->timestamps();
         });
