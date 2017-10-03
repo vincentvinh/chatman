@@ -18,7 +18,7 @@ class Message extends Model
   {
     return $this->belongsToMany('App\Group');
 }
-  public function msgM()
+  public function photos()
   {
     return $this->hasMany('App\MessagePhotos');
   }

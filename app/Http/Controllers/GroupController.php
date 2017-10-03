@@ -87,21 +87,11 @@ class GroupController extends Controller
   */
   public function show(Request $request, $id)
   {
-    $messages = DB::table('messages')->join('group_message', 'group_message.message_id', '=', 'messages.id')
+    $messages = \App\Message::join('group_message', 'group_message.message_id', '=', 'messages.id')
                               ->join('groups', 'group_message.group_id', '=', 'groups.id' )
                               ->where('groups.id', $id)
                               ->orderBy('messages.created_at', 'desc')
                               ->get();
-// dd( $messages);
-
-    for ($i =0; $i<count($messages);$i++) {
-      // dd( $messages[$i]->message_id);
-        $baba[$i] = \App\MessagePhotos::where('message_photos.message_id', '=', $messages[$i]->message_id)
-                                              ->get();
-$array = json_decode(json_encode($messages[$i]), True);
-      array_push($array, $baba[$i]);
-    $messages[$i] = json_decode(json_encode($array), FALSE);
-    }
 
 
 
