@@ -127,8 +127,9 @@ class GroupController extends Controller
       // $userReal = $user->groups()->attach($group->id);
       foreach ($request->photos as $photo) {
 
-        $filename = $photo->store('photos');
 
+        $filename = $photo->getClientOriginalName();
+        $photo->storeAs('photos', $filename);
         $messagePhotos = new \App\MessagePhotos;
         $messagePhotos->message_id = $message->id;
         $messagePhotos->filename = $filename;

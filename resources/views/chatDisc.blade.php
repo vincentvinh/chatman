@@ -65,10 +65,11 @@
 
             {{-- Todo : allways the same date --}}
             <div class="col col-xl-2 text-right">      {{$message->created_at->format('d-m-Y H:i:s')}}</div>
-{{-- {{dump($message->msgM())}} --}}
+{{-- {{dump($message->msgM)}} --}}
             @foreach ($message->msgM as $photo)
 
-              <div class="col col-xl-3 text-right">  <img src="storage/app/public/{{$photo->filename}}"></img>{{dump($photo->filename)}}</div>
+
+              <div class="col col-xl-3 text-right">  <img alt="file" src="{{asset('photos/rsz_download.png')}}"></img>{{dump($photo->filename)}}</div>
             @endforeach
 
           @endforeach

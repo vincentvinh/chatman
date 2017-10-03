@@ -30,12 +30,10 @@ Route::post('/group', 'GroupController@store');
 Route::get('/group/{id}', 'GroupController@show')->name('groupMsg');
 // Route::get('/grMsg/{group}', 'GroupController@storeMsg');
 Route::post('/grMsg/{id}', 'GroupController@storeMsg')->name('grMsg');
-
 Route::get('/addPers/{id}', 'GroupController@addPers');
 Route::post('/addPersSub/{id}', 'GroupController@addPersSub');
-
 Route::get('/addMe/{id}', 'GroupController@addMe')->name('addMe');
-
+//Route Admin
 Route::get('/admin', 'AdminController@index')->name('admin');
 Route::get('/accept/{id}', 'AdminController@accept')->name('accept');
 Route::post('/acceptVal/{id}', 'AdminController@acceptVal');
