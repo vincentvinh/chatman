@@ -54,7 +54,7 @@
 
 
           @foreach ($messages as $message)
-{{-- {{dump($message->photos)}} --}}
+{{dump($message->photos)}}
             <div class="col col-xl-3 badge badge-pill badge-primary">   {{$message->user->name}} </div>
 
             @if ($message->user->id == Auth::user()->id)
