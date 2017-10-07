@@ -68,7 +68,7 @@
 {{-- {{dump($message->msgM())}} --}}
             @foreach ($message->msgM as $photo)
 
-              <div class="col col-xl-3 text-right">  <img src="storage/app/public/{{$photo->filename}}"></img>{{dump($photo->filename)}}</div>
+              <div class="col col-xl-3 text-right">  <img src="storage/app/{{$photo->filename}}"></img>{{dump($photo->filename)}}</div>
             @endforeach
 
           @endforeach
