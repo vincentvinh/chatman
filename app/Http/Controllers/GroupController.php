@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use Validator;
 use DB;
 use Auth;
+use App\MessagePhotos;
 use App\User;
+use \Illuminate\Support\Facades\Storage;
 
 class GroupController extends Controller
 {
@@ -85,12 +87,12 @@ class GroupController extends Controller
   */
   public function show(Request $request, $id)
   {
-    $messages = \App\Message::join('group_message', 'group_message.message_id', '=', 'messages.id')
-    ->join('groups', 'group_message.group_id', '=', 'groups.id' )
-    ->where('groups.id', $id)
-    ->orderBy('messages.created_at', 'desc')
-    ->get();
-    // dd($messages);
+    $messages = \App\Message::leftjoin('group_message', 'group_message.message_id', '=', 'messages.id')
+
+                              ->where('group_message.group_id', $id)
+                              ->orderBy('messages.created_at', 'desc')
+                              ->get();
+
 
 
     $group = \App\Group::find($id);
@@ -104,11 +106,13 @@ class GroupController extends Controller
   }
   public function storeMsg(Request $request, $group)
   {
-    // dd($group);
+
+    // dd($files);
+
     $validator = Validator::make($request->all(), [
       'content' => 'required|max:255',
       'name' => 'required',
-      'photos' => 'required'
+      'photos' => 'array'
     ]);
     if ($validator->fails()) {
       return back()
@@ -125,18 +129,45 @@ class GroupController extends Controller
       $message->user_id = $user->id;
       $message->save();
       // $userReal = $user->groups()->attach($group->id);
-      foreach ($request->photos as $photo) {
 
-        $filename = $photo->store('photos');
+      //we get all the images in the directory and check if the one we want to upload doesnt exist allready
+      $files = Storage::allFiles('public/photos/');
 
-        $messagePhotos = new \App\MessagePhotos;
-        $messagePhotos->message_id = $message->id;
-        $messagePhotos->filename = $filename;
-        $messagePhotos->save();
+      if (!empty($files))
+      {
+        foreach ($files as $fileCheck) {
+              // dump($fileCheck);
+          $tabCheck[] = str_replace("public/photos/", "", $fileCheck);
+
+        }
+        // dd( $tabCheck);
       }
 
+      if (!empty($request->photos)) {
+        foreach ($request->photos as $photo) {
 
+          //we get all the photos file and foreach photo we check
+          $filename = $photo->getClientOriginalName();
+          if(in_array($filename, $tabCheck))
+          {
+            //We dont need to store the image but we need to create a object
+            $messagePhotos = new \App\MessagePhotos;
+            $messagePhotos->message_id = $message->id;
+            $messagePhotos->filename = $filename;
+            $messagePhotos->save();
 
+          }
+          else {
+
+            $path = $photo->storeAs('public/photos', $filename);
+            $messagePhotos = new \App\MessagePhotos;
+            $messagePhotos->message_id = $message->id;
+            $messagePhotos->filename = $filename;
+            $messagePhotos->save();
+          }
+
+        }
+      }
 
       $message->groups()->attach($group->id);
       // dd($message);
